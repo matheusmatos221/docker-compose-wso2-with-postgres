@@ -1,0 +1,56 @@
+# @Written by: Matheus Matos
+# @E-mail: matheus.matos@accurate.com.br
+# @Version: 1.0.0
+#
+# Follow the instructions to use:
+#
+# 0. Login using: 'docker login docker.wso2.com'
+# 1. Open CMD/Bash command line in your current O.S.
+# 2. Switch to 'docker-compose-teste.yml' current folder. (Change directory - cd command)
+# 3. Run the compose build command:
+#
+#'''
+#docker compose -f docker-compose-teste.yml up --build
+#'''
+
+version: '2.4'
+
+
+services:
+    postgres:
+        container_name: wso2_postgres
+        build: ./dockerfiles/postgres
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "wso2user" ]
+            timeout: 45s
+            interval: 10s
+            retries: 10
+        restart: always
+        #command: [--ssl=0]
+        environment:
+            - POSTGRES_USER=wso2user
+            - POSTGRES_PASSWORD=password
+        volumes:
+            - ./conf/postgres/scripts/postgres-init:/docker-entrypoint-initdb.d
+            - /var/lib/postgresql/data
+            - ./conf/postgres/scripts/postgres-sql:/tmp/postgres-sql  
+        # NOTE: Port forwarded for local development
+        ports:
+            - 5432:5432
+    api-manager:
+        container_name: wso2-apimanager
+        build: ./dockerfiles/apim
+        healthcheck:
+            test: ["CMD", "nc", "-z","localhost", "9443"]
+            interval: 10s
+            start_period: 180s
+            retries: 20
+        depends_on:
+            postgres:
+                condition: service_healthy
+        volumes:
+            - ./conf/apim:/home/wso2carbon/wso2-config-volume
+        ports:
+            - "9443:9443"
+            - "8280:8280"
+            - "8243:8243"
