@@ -15,8 +15,8 @@ type = "database_unique_id"
 
 [database.shared_db]
 type = "postgres"
-url = "jdbc:postgresql://localhost:5432/wsoamshare?autoReconnect=true&amp;useSSL=false"
 #url = "jdbc:postgresql://localhost:5432/WSO2AM_SHARED_DB?autoReconnect=true&amp;useSSL=false"
+url = "jdbc:postgresql://localhost:5432/wsoamshare?autoReconnect=true&amp;useSSL=false"
 username = "wso2user"
 password = "password"
 driver = "org.postgresql.Driver"
@@ -108,7 +108,8 @@ gateway_labels =["Default"]
 #expiry_time = "2m"
 
 [apim.analytics]
-enable = true
+#enable = true
+enable = false
 config_endpoint = "https://analytics-event-auth.choreo.dev/auth/v1"
 auth_token = "<on-prem-key>"
 
@@ -252,8 +253,12 @@ sp_name_regex = "^[\\sa-zA-Z0-9._-]*$"
 
 [database.local]
 #url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
-url = "jdbc:postgresql://localhost:5432/WSO2CARBON_DB?autoReconnect=true&amp;useSSL=false;DB_CLOSE_ON_EXIT"
 #url = "jdbc:postgresql:./repository/database/WSO2CARBON_DB?autoReconnect=true&amp;useSSL=false;DB_CLOSE_ON_EXIT"
+#url = "jdbc:postgresql://localhost:5432/WSO2CARBON_DB?autoReconnect=true&amp;useSSL=false;DB_CLOSE_ON_EXIT"
+
+#url = "jdbc:h2:./repository/database/${POSTGRES_DB};DB_CLOSE_ON_EXIT=FALSE"
+url = "jdbc:postgresql://localhost:5432/${POSTGRES_DB}?autoReconnect=true&amp;useSSL=false;DB_CLOSE_ON_EXIT=FALSE"
+
 
 [[event_listener]]
 id = "token_revocation"

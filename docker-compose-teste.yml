@@ -33,7 +33,8 @@ services:
         volumes:
             - ./conf/postgres/scripts/postgres-init:/docker-entrypoint-initdb.d
             - /var/lib/postgresql/data
-            - ./conf/postgres/scripts/postgres-sql:/tmp/postgres-sql  
+            - ./conf/postgres/scripts/postgres-sql:/tmp/postgres-sql
+            - ./init-wso2.sh:/docker-entrypoint-initdb.d/init-wso2.sh
         # NOTE: Port forwarded for local development
         ports:
             - 5432:5432

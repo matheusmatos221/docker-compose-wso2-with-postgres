@@ -7,7 +7,11 @@ set -e
 #
 
 
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
+#echo "Initializing database WSO2 databases"
+#echo "Initializing database WSO2 database ($POSTGRES_DB)"
+echo "Creating WSO2 databases using POSTGRESUSER: $POSTGRES_USER"
+
+psql --variable=ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     CREATE DATABASE mbstoredb;
     GRANT ALL PRIVILEGES ON DATABASE mbstoredb TO wso2user;
 	GRANT ALL ON DATABASE mbstoredb TO PUBLIC;
@@ -62,57 +66,48 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
 	CREATE DATABASE wsoamshare;
     GRANT ALL PRIVILEGES ON DATABASE wsoamshare TO wso2user;
 	GRANT ALL ON DATABASE wsoamshare TO PUBLIC;
-	CREATE DATABASE teste;
-    GRANT ALL PRIVILEGES ON DATABASE teste TO wso2user;
-	GRANT ALL ON DATABASE teste TO PUBLIC;
-	CREATE DATABASE testedois;
-    GRANT ALL PRIVILEGES ON DATABASE testedois TO wso2user;
-	GRANT ALL ON DATABASE testedois TO PUBLIC;
+	
     ALTER ROLE wso2user CONNECTION LIMIT -1;
 EOSQL
 
 #
 # Create Tables
 #
-echo "Initializing database WSO2 databases"
-psql --username="$POSTGRES_USER" -d mbstoredb -f /tmp/postgres-sql/mb-init.sql
-psql --username="$POSTGRES_USER" -d identitydb -f /tmp/postgres-sql/carbon-init.sql
-#Yes, two scripts, one database
-psql --username="$POSTGRES_USER" -d registrydb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d registrydb -f /tmp/postgres-sql/identity-init.sql
-
-
-psql --username="$POSTGRES_USER" -d identitymetricsdb -f /tmp/postgres-sql/metrics-init.sql
-#Yes, two scripts, one database
-psql --username="$POSTGRES_USER" -d identitycarbondb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d identitycarbondb -f /tmp/postgres-sql/identity-init.sql
-psql --username="$POSTGRES_USER" -d identitybpeldb -f /tmp/postgres-sql/bpel-init.sql
-
-
-psql --username="$POSTGRES_USER" -d gregmetricsdb -f /tmp/postgres-sql/metrics-init.sql
-psql --username="$POSTGRES_USER" -d gregbpeldb -f /tmp/postgres-sql/bpel-init.sql
-psql --username="$POSTGRES_USER" -d gregsocialdb -f /tmp/postgres-sql/social-init.sql
-
-
-psql --username="$POSTGRES_USER" -d apimgtdb -f /tmp/postgres-sql/apimgt-init.sql
-psql --username="$POSTGRES_USER" -d amcarbondb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d ammetricsdb -f /tmp/postgres-sql/metrics-init.sql
-
-
-psql --username="$POSTGRES_USER" -d esbcarbondb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d brscarbondb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d dsscarbondb -f /tmp/postgres-sql/carbon-init.sql
-psql --username="$POSTGRES_USER" -d ascarbondb -f /tmp/postgres-sql/carbon-init.sql
+#echo "Initializing database WSO2 databases"
+#psql --username="wso2user" -d mbstoredb -f /tmp/postgres-sql/mb-init.sql
+#psql --username="wso2user" -d identitydb -f /tmp/postgres-sql/carbon-init.sql
+##Yes, two scripts, one database
+#psql --username="wso2user" -d registrydb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d registrydb -f /tmp/postgres-sql/identity-init.sql
+#
+#
+#psql --username="wso2user" -d identitymetricsdb -f /tmp/postgres-sql/metrics-init.sql
+##Yes, two scripts, one database
+#psql --username="wso2user" -d identitycarbondb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d identitycarbondb -f /tmp/postgres-sql/identity-init.sql
+#psql --username="wso2user" -d identitybpeldb -f /tmp/postgres-sql/bpel-init.sql
+#
+#
+#psql --username="wso2user" -d gregmetricsdb -f /tmp/postgres-sql/metrics-init.sql
+#psql --username="wso2user" -d gregbpeldb -f /tmp/postgres-sql/bpel-init.sql
+#psql --username="wso2user" -d gregsocialdb -f /tmp/postgres-sql/social-init.sql
+#
+#
+#psql --username="wso2user" -d apimgtdb -f /tmp/postgres-sql/apimgt-init.sql
+#psql --username="wso2user" -d amcarbondb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d ammetricsdb -f /tmp/postgres-sql/metrics-init.sql
+#
+#
+#psql --username="wso2user" -d esbcarbondb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d brscarbondb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d dsscarbondb -f /tmp/postgres-sql/carbon-init.sql
+#psql --username="wso2user" -d ascarbondb -f /tmp/postgres-sql/carbon-init.sql
 
 #
 # ADDED BY MATHEUS
 #
-psql --username="$POSTGRES_USER" -d wsoam -f /tmp/postgres-sql/mypostgres-apim.sql
-psql --username="$POSTGRES_USER" -d wsoamshare -f /tmp/postgres-sql/mypostgres-shared.sql
-
-
-psql --username="$POSTGRES_USER" -d teste -f /tmp/postgres-sql/mypostgres-apim.sql
-psql --username="$POSTGRES_USER" -d testedois -f /tmp/postgres-sql/mypostgres-shared.sql
+psql --username="wso2user" -d wsoam -f /tmp/postgres-sql/mypostgres-apim.sql
+psql --username="wso2user" -d wsoamshare -f /tmp/postgres-sql/mypostgres-shared.sql
 
 #
 # Add postgres conf
